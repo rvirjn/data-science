@@ -1,20 +1,33 @@
----------- hall of fame ----------
-Input: 4.5
-Total eligible students: 2
-Qualified students:
+
+    ----------hall of fame-----------------------
+    Input: 4.5
+    Total eligible students: 2
+    Qualified students:
+    2008CSE1225 / 4.5
+2008CSE1226 / 4.8
+
+    -------------------------------------------------
+    
+    ---------- new course candidates ------------------
+    Input: 3.5 to 4.0
+    Total eligible students: 6
+    Qualified students:
+    2008CSE1223 / 3.5
+2008CSE1224 / 3.9
 2008CSE1225 / 4.5
 2008CSE1226 / 4.8
--------------------------------------
----------- new course candidates ----------
-Input: 3.5 to 4.0
-Total eligible students: 2
-Qualified students:
-2008CSE1223 / 3.5
-2008CSE1224 / 3.9
--------------------------------------
----------- department CGPA ----------
-CSE: max: 3.5, avg: 3.4
-MEC: max: 3.5, avg: 3.4
-ECE: max: 3.5, avg: 3.4
-ARC: max: 3.5, avg: 3.4
--------------------------------------
+2008CSE1227 / 4.1
+2008MEC1001 / 4.2
+
+    -----------------------------------------------------
+    
+    ---------- department CGPA -------------
+    CSE: max: 3.5, avg: 3.5
+CSE: max: 3.9, avg: 3.9
+CSE: max: 4.5, avg: 4.5
+CSE: max: 4.8, avg: 4.8
+CSE: max: 4.1, avg: 4.1
+MEC: max: 4.2, avg: 4.2
+
+    -----------------------------------------
+    
