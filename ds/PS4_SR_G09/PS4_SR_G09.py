@@ -4,7 +4,7 @@
 import re
 
 
-def initializeHash():
+def initializeHash(size=10):
     """
     This function creates an empty hash table and points to null
 
@@ -12,9 +12,7 @@ def initializeHash():
     :return:
     """
     from ds.PS4_SR_G09.hashtable import HashTable
-    StudentHashRecords = HashTable()
-
-    # StudentHashRecords = {}
+    StudentHashRecords = HashTable(size=size)
     return StudentHashRecords
 
 
@@ -31,7 +29,7 @@ def insertStudentRec(StudentHashRecords, studentId, CGPA):
     :param CGPA:
     :return:
     """
-    StudentHashRecords[studentId] = CGPA
+    StudentHashRecords.put(studentId, CGPA)
     return StudentHashRecords
 
 
@@ -73,12 +71,12 @@ def hallOfFame(StudentHashRecords, CGPA):
     student_format = """{key} / {value}"""
     Qualified_students = ''
     for key in StudentHashRecords.keys():
-        value = StudentHashRecords[key]
+        value = StudentHashRecords.get(key)
         if value >= CGPA:
             count = count + 1
             temp[key] = value
     for key in temp.keys():
-        value = StudentHashRecords[key]
+        value = StudentHashRecords.get(key)
         Qualified_students = Qualified_students + ((student_format.format(key=key,
                                                          value=value))).strip() + '\n'
     output = output_format.format(CGPA=CGPA, count=count,
@@ -123,12 +121,12 @@ def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
     student_format = """{key} / {value}"""
     Qualified_students = ''
     for key in StudentHashRecords.keys():
-        value = StudentHashRecords[key]
+        value = StudentHashRecords.get(key)
         if CGPAFrom <= value <= CPGATo:
             count = count + 1
             temp[key] = value
     for key in temp.keys():
-        value = StudentHashRecords[key]
+        value = StudentHashRecords.get(key)
         Qualified_students = Qualified_students + ((student_format.format(key=key,
                                                          value=value))).strip() + '\n'
 
@@ -158,15 +156,10 @@ def depAvg(StudentHashRecords):
     :param StudentHashRecords:
     :return:
     """
-    temp = {}
     CSE_max, CSE_total, CSE_numberOfRec = 0, 0, 0
     MEC_max, MEC_total, MEC_numberOfRec = 0, 0, 0
     ECE_max, ECE_total, ECE_numberOfRec = 0, 0, 0
     ARC_max, ARC_total, ARC_numberOfRec = 0, 0, 0
-    temp['CSE'] = [0, 0, 0]
-    temp['MEC'] = [0, 0, 0]
-    temp['ECE'] = [0, 0, 0]
-    temp['ARC'] = [0, 0, 0]
 
     output_format = "---------- department CGPA -------------\n" \
                     "{students}\n" \
@@ -174,7 +167,7 @@ def depAvg(StudentHashRecords):
     student_format = """{dept}: max: {dept_max}, avg: {dept_avg}"""
     students = ''
     for key in StudentHashRecords.keys():
-        value = float(StudentHashRecords[key])
+        value = float(StudentHashRecords.get(key))
         dept = re.split('(\d+)', key)[2]
         if dept == 'CSE':
             CSE_numberOfRec = CSE_numberOfRec + 1
@@ -215,7 +208,6 @@ def depAvg(StudentHashRecords):
 
     output = output_format.format(students=students)
     print(output)
-    temp.clear()
     return output
 
 

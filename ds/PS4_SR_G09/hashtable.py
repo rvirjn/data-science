@@ -1,110 +1,72 @@
-############ HashTable helper functions
-def hash_function(key_str, size):
-    return sum([ord(c) for c in key_str]) % size
+import re
 
-
-############ HashTable class
 class HashTable:
-    """ Hash table which uses strings for keys. Value can be any object.
-
-    Example usage:
-
-        ht = HashTable(10)
-        ht.set('a', 1).set('b', 2).set('c', 3)
-        ht['c'] = 30
-
-    """
-
-    def __init__(self, capacity=1000):
-        """ Capacity defaults to 1000. """
-
-        self.capacity = capacity
-        self.size = 0
+    def __init__(self, size=100):
+        self.size = size
+        self.slots = [None] * self.size
+        self.data = [None] * self.size
         self._keys = []
-        self._values = []
-        # Storage format: [ [ [key1, value], [key2, value] ], [ [key3, value] ] ]
-        # The outmost list is the one which the hash function maps the index to. The next inner
-        # Array is the list of objects in that storage cell. The 3rd level is the individual
-        # item array, where the 1st item is the key, and the 2nd item is the value.
-        self.data = [[] for _ in range(capacity)]
 
-    def _find_by_key(self, key, find_result_func):
-        index = hash_function(key, self.capacity)
-        hash_table_cell = self.data[index]
-        found_item = None
-        for item in hash_table_cell:
-            if item[0] == key:
-                found_item = item
-                break
+    def put(self, key, data):
+        hashvalue = self.HashId(key)
 
-        return find_result_func(found_item, hash_table_cell)
-
-    def set(self, key, obj):
-        """ Insert object with key into hash table. If key already exists, then the object will be
-        updated. Key must be a string. Returns self. """
-
-        def find_result_func(found_item, hash_table_cell):
-            if found_item:
-                found_item[1] = obj
+        if self.slots[hashvalue] == None:
+            self.slots[hashvalue] = key
+            self.data[hashvalue] = data
+        else:
+            if self.slots[hashvalue] == key:
+                self.data[hashvalue] = data  # replace
             else:
-                hash_table_cell.append([key, obj])
-                self.size += 1
-                self._keys.append(key)
-                self._values.append(obj)
+                nextslot = self.rehash(hashvalue)
+                while self.slots[nextslot] != None and \
+                        self.slots[nextslot] != key:
+                    nextslot = self.rehash(nextslot)
 
-        self._find_by_key(key, find_result_func)
-        return self
+                if self.slots[nextslot] == None:
+                    self.slots[nextslot] = key
+                    self.data[nextslot] = data
+                else:
+                    self.data[nextslot] = data  # replace
+        self._keys.append(key)
 
     def get(self, key):
-        """ Get object with key (key must be a string). If not found, it will raise a KeyError. """
+        startslot = self.HashId(key)
 
-        def find_result_func(found_item, _):
-            if found_item:
-                return found_item[1]
+        data = None
+        stop = False
+        found = False
+        position = startslot
+        while self.slots[position] != None and \
+                not found and not stop:
+            if self.slots[position] == key:
+                found = True
+                data = self.data[position]
             else:
-                raise KeyError(key)
-
-        return self._find_by_key(key, find_result_func)
-
-    def remove(self, key):
-        """ Remove the object associated with key from the hashtable. If found, the object will
-        be returned. If not found, KeyError will be raised. """
-
-        def find_result_func(found_item, hash_table_cell):
-            if found_item:
-                hash_table_cell.remove(found_item)
-                self._keys.remove(key)
-                self.size -= 1
-                return found_item[1]
-            else:
-                raise KeyError(key)
-
-        return self._find_by_key(key, find_result_func)
-
-    def clear(self):
-        """
-        Delete the Table
-        :return:
-        """
-        self.data.clear()
-
-    ####### Python's dict interface
-
-    def keys(self):
-        return self._keys
-
-    def values(self):
-        return self._keys
-
-    def __setitem__(self, key, value):
-        self.set(key, value)
+                position = self.rehash(position)
+                if position == startslot:
+                    stop = True
+        return data
 
     def __getitem__(self, key):
         return self.get(key)
 
-    def __delitem__(self, key):
-        return self.remove(key)
+    def __setitem__(self, key, data):
+        self.put(key, data)
 
-    def __repr__(self):
-        return '{ ' + ', '.join([key + ':' + str(self.get(key)) for key in self._keys]) + ' }'
+    def HashId(self, key):
+        size = len(self.slots)
+        digits = re.findall(r'\d+', key)
+        digit = "".join(digits)
+        return int(digit) % size
 
+    def rehash(self, oldhash):
+        size = len(self.slots)
+        return int(oldhash + 1) % size
+
+    def keys(self):
+        return set(self._keys)
+
+    def clear(self):
+        self.slots = None
+        self.data = None
+        self._keys = None
