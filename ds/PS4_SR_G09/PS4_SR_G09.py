@@ -11,11 +11,10 @@ def initializeHash():
     :param self:
     :return:
     """
-    #TODO
-    # from ds.PS4_SR_G09.hashtable import HashTable
-    # StudentHashRecords = HashTable()
+    from ds.PS4_SR_G09.hashtable import HashTable
+    StudentHashRecords = HashTable()
 
-    StudentHashRecords = {} #TODO Remove this
+    # StudentHashRecords = {}
     return StudentHashRecords
 
 
@@ -32,7 +31,7 @@ def insertStudentRec(StudentHashRecords, studentId, CGPA):
     :param CGPA:
     :return:
     """
-    StudentHashRecords[studentId] = CGPA #:TODO Remove this
+    StudentHashRecords[studentId] = CGPA
     return StudentHashRecords
 
 
