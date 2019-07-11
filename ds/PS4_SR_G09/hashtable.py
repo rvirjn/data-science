@@ -2,6 +2,10 @@ import re
 
 class HashTable:
     def __init__(self, size=100):
+        """
+        Default HashTable size 100
+        :param size:
+        """
         self.size = size
         self.slots = [None] * self.size
         self.data = [None] * self.size
@@ -9,7 +13,9 @@ class HashTable:
 
     def put(self, key, data):
         hashvalue = self.HashId(key)
-
+        if None not in self.slots:
+            self.slots.extend([None] * 100)
+            self.data.extend([None] * 100)
         if self.slots[hashvalue] == None:
             self.slots[hashvalue] = key
             self.data[hashvalue] = data
@@ -53,13 +59,26 @@ class HashTable:
     def __setitem__(self, key, data):
         self.put(key, data)
 
+    def __repr__(self):
+        return '{ ' + ', '.join([key + ':' + str(self.get(key)) for key in self.keys()]) + ' }'
+
     def HashId(self, key):
+        """
+        hashing algorithm = digit_in_key % size of hashtable
+        :param key:
+        :return:
+        """
         size = len(self.slots)
         digits = re.findall(r'\d+', key)
         digit = "".join(digits)
         return int(digit) % size
 
     def rehash(self, oldhash):
+        """
+        rehashing algorithm = digit_in_key+1 % size of hashtable
+        :param oldhash:
+        :return:
+        """
         size = len(self.slots)
         return int(oldhash + 1) % size
 

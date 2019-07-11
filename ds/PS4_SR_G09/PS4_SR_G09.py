@@ -4,15 +4,14 @@
 import re
 
 
-def initializeHash(size=10):
+def initializeHash():
     """
     This function creates an empty hash table and points to null
 
-    :param self:
     :return:
     """
     from ds.PS4_SR_G09.hashtable import HashTable
-    StudentHashRecords = HashTable(size=size)
+    StudentHashRecords = HashTable()
     return StudentHashRecords
 
 
@@ -267,6 +266,8 @@ if __name__ == "__main__":
     # department CGPA
     depAvg_output = depAvg(StudentHashRecords)
     writeTofile(depAvg_output)
+
+    # print(StudentHashRecords)
 
     # clean-up code
     StudentHashRecords = destroyHash(StudentHashRecords)
