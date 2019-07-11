@@ -3,19 +3,20 @@
 
 import re
 
-class Student:
-    def __init__(self):
-        pass
 
-    def initializeHash(self):
-        """
-        This function creates an empty hash table and points to null
+def initializeHash():
+    """
+    This function creates an empty hash table and points to null
 
-        :param self:
-        :return:
-        """
-        StudentHashRecords = {}
-        return StudentHashRecords
+    :param self:
+    :return:
+    """
+    #TODO
+    # from ds.PS4_SR_G09.hashtable import HashTable
+    # StudentHashRecords = HashTable()
+
+    StudentHashRecords = {} #TODO Remove this
+    return StudentHashRecords
 
 
 def insertStudentRec(StudentHashRecords, studentId, CGPA):
@@ -31,7 +32,7 @@ def insertStudentRec(StudentHashRecords, studentId, CGPA):
     :param CGPA:
     :return:
     """
-    StudentHashRecords[studentId] = CGPA
+    StudentHashRecords[studentId] = CGPA #:TODO Remove this
     return StudentHashRecords
 
 
@@ -63,19 +64,18 @@ def hallOfFame(StudentHashRecords, CGPA):
     """
     temp = {}
     count = 0
-    output_format = """
-    ----------hall of fame-----------------------
-    Input: {CGPA}
-    Total eligible students: {count}
-    Qualified students:
-    {Qualified_students}
-    -------------------------------------------------
-    """
+    output_format = "---------hall of fame-----------------------\n" \
+                    "Input: {CGPA}\n" \
+                    "Total eligible students: {count}\n" \
+                    "Qualified students:\n" \
+                    "{Qualified_students}" \
+                    "-------------------------------------------------\n"
+
     student_format = """{key} / {value}"""
     Qualified_students = ''
     for key in StudentHashRecords.keys():
         value = StudentHashRecords[key]
-        if value == CGPA or value > CGPA:
+        if value >= CGPA:
             count = count + 1
             temp[key] = value
     for key in temp.keys():
@@ -85,6 +85,7 @@ def hallOfFame(StudentHashRecords, CGPA):
     output = output_format.format(CGPA=CGPA, count=count,
                            Qualified_students=Qualified_students)
     print(output)
+    temp.clear()
     return output
 
 
@@ -95,7 +96,7 @@ def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
     CGPAs can be read from the file promptsPS4.txt. The input can be
     identified with the tag mentioned below
 
-    courseOffer: 3.5 : 4:0
+    courseOffer: 3.5 : 4.0
 
     This list should be output to outputPS4.txt that contains the student id and CGPA.
 
@@ -114,19 +115,17 @@ def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
     """
     temp = {}
     count = 0
-    Output_format = """
-    ---------- new course candidates ------------------
-    Input: {CGPAFrom} to {CPGATo}
-    Total eligible students: {count}
-    Qualified students:
-    {students}
-    -----------------------------------------------------
-    """
+    output_format = "---------new course candidates-----------------------\n" \
+                    "Input: {CGPAFrom} to {CPGATo}\n" \
+                    "Total eligible students: {count}\n" \
+                    "Qualified students:\n" \
+                    "{Qualified_students}" \
+                    "-------------------------------------------------\n"
     student_format = """{key} / {value}"""
     Qualified_students = ''
     for key in StudentHashRecords.keys():
         value = StudentHashRecords[key]
-        if value >= CGPAFrom or value >= CPGATo:
+        if CGPAFrom <= value <= CPGATo:
             count = count + 1
             temp[key] = value
     for key in temp.keys():
@@ -134,10 +133,10 @@ def newCourseList(StudentHashRecords, CGPAFrom, CPGATo):
         Qualified_students = Qualified_students + ((student_format.format(key=key,
                                                          value=value))).strip() + '\n'
 
-    output = Output_format.format(CPGATo=CPGATo, CGPAFrom=CGPAFrom,
-                                   count=count,
-                               students=Qualified_students)
+    output = output_format.format(CPGATo=CPGATo, CGPAFrom=CGPAFrom,
+                                   count=count, Qualified_students=Qualified_students)
     print(output)
+    temp.clear()
     return output
 
 
@@ -160,20 +159,64 @@ def depAvg(StudentHashRecords):
     :param StudentHashRecords:
     :return:
     """
-    output_format = """
-    ---------- department CGPA -------------
-    {students}
-    -----------------------------------------
-    """
-    student_format="""{dept}: max: {dept_max}, avg: {dept_avg}"""
+    temp = {}
+    CSE_max, CSE_total, CSE_numberOfRec = 0, 0, 0
+    MEC_max, MEC_total, MEC_numberOfRec = 0, 0, 0
+    ECE_max, ECE_total, ECE_numberOfRec = 0, 0, 0
+    ARC_max, ARC_total, ARC_numberOfRec = 0, 0, 0
+    temp['CSE'] = [0, 0, 0]
+    temp['MEC'] = [0, 0, 0]
+    temp['ECE'] = [0, 0, 0]
+    temp['ARC'] = [0, 0, 0]
+
+    output_format = "---------- department CGPA -------------\n" \
+                    "{students}\n" \
+                    "-----------------------------------------\n"
+    student_format = """{dept}: max: {dept_max}, avg: {dept_avg}"""
     students = ''
     for key in StudentHashRecords.keys():
-        value = StudentHashRecords[key]
+        value = float(StudentHashRecords[key])
         dept = re.split('(\d+)', key)[2]
-        students = students + ((student_format.format(dept=dept, dept_max=value,
-                                      dept_avg=value))).strip() + '\n'
+        if dept == 'CSE':
+            CSE_numberOfRec = CSE_numberOfRec + 1
+            CSE_total = CSE_total + value
+            if value > CSE_max:
+                CSE_max = value
+        if dept == 'MEC':
+            MEC_numberOfRec = MEC_numberOfRec + 1
+            MEC_total = MEC_total + value
+            if value > MEC_max:
+                MEC_max = value
+        if dept == 'ECE':
+            ECE_numberOfRec = ECE_numberOfRec + 1
+            ECE_total = ECE_total + value
+            if value > ECE_max:
+                ECE_max = value
+        if dept == 'ARC':
+            ARC_numberOfRec = ARC_numberOfRec + 1
+            ARC_total = ARC_total + value
+            if value > ARC_max:
+                ARC_max = value
+    if CSE_numberOfRec:
+        CSE_avg = float(CSE_total / CSE_numberOfRec)
+        students = students + ((student_format.format(dept='CSE', dept_max=CSE_max,
+                                                      dept_avg=round(CSE_avg, 1)))).strip() + '\n'
+    if MEC_numberOfRec:
+        MEC_avg = float(MEC_total / MEC_numberOfRec)
+        students = students + ((student_format.format(dept='MEC', dept_max=MEC_max,
+                                                      dept_avg=round(MEC_avg, 1)))).strip() + '\n'
+    if ECE_numberOfRec:
+        ECE_avg = float(ECE_total / ECE_numberOfRec)
+        students = students + ((student_format.format(dept='ECE', dept_max=ECE_max,
+                                                      dept_avg=round(ECE_avg, 1)))).strip() + '\n'
+    if ARC_numberOfRec:
+        ARC_avg = float(ARC_total / ARC_numberOfRec)
+        students = students + ((student_format.format(dept='ARC', dept_max=ARC_max,
+                                                      dept_avg=round(ARC_avg, 1)))).strip() + '\n'
+
     output = output_format.format(students=students)
     print(output)
+    temp.clear()
     return output
 
 
@@ -196,8 +239,7 @@ def writeTofile(output):
 
 
 if __name__ == "__main__":
-    student = Student()
-    StudentHashRecords = student.initializeHash()
+    StudentHashRecords = initializeHash()
 
     # create outputPS4.txt
     open("outputPS4.txt", "w").close()
