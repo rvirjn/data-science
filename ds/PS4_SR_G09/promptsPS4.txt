@@ -1,2 +1,0 @@
-hallOfFame: 4.5
-courseOffer: 3.5 : 4.0
