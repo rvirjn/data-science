@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+
 KD = pd.read_csv('kidneyChronic.csv', na_values=['?', '\t?'])
 numeric_datatype = ['age', 'bp', 'bgr', 'bu', 'sc',
                     'sod', 'pot', 'hemo', 'pcv', 'wbcc', 'rbcc']
@@ -8,6 +9,8 @@ nominal_datatype = ['sg', 'al', 'su', 'rbc', 'pc', 'pcc',
 print(KD.head())
 print(KD.info())
 print(KD.isnull().sum())
+for data in numeric_datatype:
+    KD[[data]].boxplot(showmeans=True)
 print(KD['pcv'].value_counts(dropna=False))
 # From the info we could see that for numerical data PCV
 # is not correctly recognised as numeric which suggests malformed data
@@ -58,4 +61,10 @@ rf = RandomForestClassifier(
 rf.fit(X_train, y_train)
 pred = rf.predict(X_test)
 print(classification_report(y_test, pred))
-print("Accuracy of the given model is : {}".format(accuracy_score(y_test, pred)))
+print("Accuracy of the RandomForestClassifier model is : {}".format(accuracy_score(y_test, pred)))
+
+from sklearn.tree import DecisionTreeClassifier
+clf = DecisionTreeClassifier(random_state=0)
+clf.fit(X=X_train, y=y_train)
+print("Feature importance: {}".format(clf.feature_importances_))
+print("Accuracy of the DecisionTreeClassifier model is : {}".format(clf.score(X=X_test, y=y_test)))
