@@ -1,4 +1,4 @@
-# data-science-sem1
+# data-science
 Data Science and Engineering Sem 1 Programs. 
 
 
