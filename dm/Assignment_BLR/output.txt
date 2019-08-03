@@ -1,9 +1,11 @@
-    age    bp     sg   al   su     rbc        pc         pcc          ba    bgr    bu   sc    sod  pot  hemo   pcv    wbcc  rbcc  htn   dm cad appet   pe  ane class
-0  48.0  80.0  1.020  1.0  0.0     NaN    normal  notpresent  notpresent  121.0  36.0  1.2    NaN  NaN  15.4  44.0  7800.0   5.2  yes  yes  no  good   no   no   ckd
-1   7.0  50.0  1.020  4.0  0.0     NaN    normal  notpresent  notpresent    NaN  18.0  0.8    NaN  NaN  11.3  38.0  6000.0   NaN   no   no  no  good   no   no   ckd
-2  62.0  80.0  1.010  2.0  3.0  normal    normal  notpresent  notpresent  423.0  53.0  1.8    NaN  NaN   9.6  31.0  7500.0   NaN   no  yes  no  poor   no  yes   ckd
-3  48.0  70.0  1.005  4.0  0.0  normal  abnormal     present  notpresent  117.0  56.0  3.8  111.0  2.5  11.2  32.0  6700.0   3.9  yes   no  no  poor  yes  yes   ckd
-4  51.0  80.0  1.010  2.0  0.0  normal    normal  notpresent  notpresent  106.0  26.0  1.4    NaN  NaN  11.6  35.0  7300.0   4.6   no   no  no  good   no   no   ckd
+    age    bp     sg   al   su     rbc  ...   dm cad appet   pe  ane  class
+0  48.0  80.0  1.020  1.0  0.0     NaN  ...  yes  no  good   no   no    ckd
+1   7.0  50.0  1.020  4.0  0.0     NaN  ...   no  no  good   no   no    ckd
+2  62.0  80.0  1.010  2.0  3.0  normal  ...  yes  no  poor   no  yes    ckd
+3  48.0  70.0  1.005  4.0  0.0  normal  ...   no  no  poor  yes  yes    ckd
+4  51.0  80.0  1.010  2.0  0.0  normal  ...   no  no  good   no   no    ckd
+
+[5 rows x 25 columns]
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 400 entries, 0 to 399
 Data columns (total 25 columns):
@@ -315,4 +317,10 @@ Name: class, dtype: int64
    macro avg       0.95      0.97      0.96       320
 weighted avg       0.96      0.96      0.96       320
 
-Accuracy of the given model is : 0.9625
+Accuracy of the RandomForestClassifier model is : 0.9625
+Feature importance: [0.         0.         0.0963777  0.         0.         0.23127924
+ 0.         0.57656075 0.         0.         0.         0.
+ 0.09578231 0.         0.         0.         0.         0.
+ 0.         0.         0.         0.         0.         0.
+ 0.         0.        ]
+Accuracy of the DecisionTreeClassifier model is : 0.896875
